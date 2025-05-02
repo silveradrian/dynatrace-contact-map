@@ -264,8 +264,8 @@ class LinkedInConnectionIntelligence {
     authenticate() {
         try {
             console.log("Authentication initiated...");
-            // Show login modal
-            this.showLoginModal();
+            // Show login modal using a simpler approach
+            this.showSimpleLoginModal();
         } catch (error) {
             console.error("Error in authenticate method:", error);
             alert("Could not initialize LinkedIn login. Please check the console for errors.");
@@ -366,6 +366,91 @@ class LinkedInConnectionIntelligence {
     }
     
     /**
+     * Show a simpler LinkedIn login modal without using Bootstrap Modal class
+     */
+    showSimpleLoginModal() {
+        try {
+            console.log("Creating simple login modal...");
+            
+            // Create overlay
+            const overlay = document.createElement('div');
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100%';
+            overlay.style.height = '100%';
+            overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+            overlay.style.zIndex = '1050';
+            overlay.style.display = 'flex';
+            overlay.style.justifyContent = 'center';
+            overlay.style.alignItems = 'center';
+            overlay.id = 'linkedin-overlay';
+            
+            // Create modal content
+            const modalContent = document.createElement('div');
+            modalContent.style.backgroundColor = 'white';
+            modalContent.style.borderRadius = '5px';
+            modalContent.style.width = '400px';
+            modalContent.style.maxWidth = '90%';
+            modalContent.style.padding = '20px';
+            modalContent.style.boxShadow = '0 5px 15px rgba(0, 0, 0, 0.5)';
+            
+            modalContent.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h5 style="margin: 0;">
+                        <i class="fab fa-linkedin me-2" style="color: #0077B5;"></i> Sign in with LinkedIn
+                    </h5>
+                    <button type="button" class="btn-close" id="linkedin-close-btn" style="background: none; border: none; font-size: 1.5rem; cursor: pointer;">&times;</button>
+                </div>
+                <div style="text-align: center; margin-bottom: 20px;">
+                    <img src="https://brand.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn" width="120">
+                </div>
+                <form id="linkedin-login-form">
+                    <div style="margin-bottom: 15px;">
+                        <label for="linkedin-email" style="display: block; margin-bottom: 5px;">Email or Phone</label>
+                        <input type="email" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px;" id="linkedin-email" value="adrian.howett@example.com">
+                    </div>
+                    <div style="margin-bottom: 15px;">
+                        <label for="linkedin-password" style="display: block; margin-bottom: 5px;">Password</label>
+                        <input type="password" style="width: 100%; padding: 8px; border: 1px solid #ced4da; border-radius: 4px;" id="linkedin-password" value="********">
+                    </div>
+                    <div>
+                        <button type="submit" style="width: 100%; padding: 8px 16px; background-color: #0077B5; color: white; border: none; border-radius: 4px; cursor: pointer;">Sign In</button>
+                    </div>
+                </form>
+                <div style="margin-top: 15px; text-align: center;">
+                    <small style="color: #6c757d;">This is a simulation for the POC. No actual authentication occurs.</small>
+                </div>
+            `;
+            
+            overlay.appendChild(modalContent);
+            document.body.appendChild(overlay);
+            
+            // Add close button event
+            document.getElementById('linkedin-close-btn').addEventListener('click', () => {
+                document.body.removeChild(overlay);
+            });
+            
+            // Add form submit event
+            document.getElementById('linkedin-login-form').addEventListener('submit', (e) => {
+                console.log("Login form submitted");
+                e.preventDefault();
+                
+                // Remove the modal
+                document.body.removeChild(overlay);
+                
+                // Simulate successful authentication
+                this.handleSuccessfulAuth();
+            });
+            
+            console.log("Simple login modal created successfully");
+        } catch (error) {
+            console.error("Error showing simple login modal:", error);
+            alert("Could not open LinkedIn login modal. Please check the console for errors.");
+        }
+    }
+    
+    /**
      * Handle successful authentication
      */
     handleSuccessfulAuth() {
@@ -460,8 +545,6 @@ class LinkedInConnectionIntelligence {
             this.showToast("Error: Could not fetch LinkedIn data");
         }
     }
-    
-    // Rest of the code remains the same...
     
     /**
      * Generate sample connection paths
