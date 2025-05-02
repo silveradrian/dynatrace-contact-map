@@ -1,0 +1,188 @@
+:root {
+    /* Cylvy brand colors */
+    --cylvy-amaranth: #e51848;
+    --cylvy-grape: #8806bf;
+    --cylvy-razzmatazz: #e61675;
+    --cylvy-fandango: #c0398d;
+    --cylvy-plum: #9b3c8f;
+    
+    /* Bootstrap tokens */
+    --bs-link-color: var(--cylvy-amaranth);
+    --bs-link-hover-color: var(--cylvy-grape);
+}
+
+/* Custom navbar gradient */
+.navbar {
+    background: linear-gradient(90deg, var(--cylvy-amaranth) 0%, var(--cylvy-grape) 100%);
+}
+
+/* Override link colors */
+a {
+    color: var(--cylvy-amaranth);
+}
+
+a:hover {
+    color: var(--cylvy-grape);
+}
+
+/* Map container height */
+#contact-map {
+    height: 500px;
+    border-radius: var(--radius-radius-lg);
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+/* Custom marker colors */
+.c-level-marker {
+    color: var(--cylvy-amaranth);
+}
+
+.vp-marker {
+    color: var(--cylvy-razzmatazz);
+}
+
+.director-marker {
+    color: var(--cylvy-fandango);
+}
+
+.manager-marker {
+    color: var(--cylvy-plum);
+}
+
+/* Card styling */
+.card {
+    border-radius: var(--radius-radius-lg);
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.card-header {
+    border-top-left-radius: calc(var(--radius-radius-lg) - 1px);
+    border-top-right-radius: calc(var(--radius-radius-lg) - 1px);
+}
+
+/* Filter panel styling */
+.filter {
+    border-color: #dee2e6;
+}
+
+.filter:focus {
+    border-color: var(--cylvy-amaranth);
+    box-shadow: 0 0 0 0.25rem rgba(229, 24, 72, 0.25);
+}
+
+/* Contact details panel */
+#contact-details {
+    min-height: 300px;
+}
+
+.contact-card {
+    border-left: 4px solid var(--cylvy-amaranth);
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: var(--radius-radius-sm);
+}
+
+.contact-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.contact-company {
+    font-weight: bold;
+    color: var(--cylvy-amaranth);
+}
+
+.contact-title {
+    font-style: italic;
+    color: #6c757d;
+}
+
+.contact-info {
+    margin-top: 10px;
+}
+
+.contact-info i {
+    width: 20px;
+    color: var(--cylvy-grape);
+}
+
+/* Custom markers for the map */
+.custom-marker {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+}
+
+.custom-marker i {
+    color: var(--cylvy-amaranth);
+}
+
+.custom-marker.c-level i {
+    color: var(--cylvy-amaranth);
+}
+
+.custom-marker.vp i {
+    color: var(--cylvy-razzmatazz);
+}
+
+.custom-marker.director i {
+    color: var(--cylvy-fandango);
+}
+
+.custom-marker.manager i {
+    color: var(--cylvy-plum);
+}
+
+/* Leaflet popup customization */
+.leaflet-popup-content-wrapper {
+    border-radius: var(--radius-radius-sm);
+}
+
+.leaflet-popup-content {
+    margin: 10px 14px;
+}
+
+.popup-content {
+    min-width: 200px;
+}
+
+.popup-header {
+    font-weight: bold;
+    color: var(--cylvy-amaranth);
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+}
+
+.popup-company {
+    font-style: italic;
+    color: #6c757d;
+}
+
+.btn-primary {
+    background-color: var(--cylvy-amaranth);
+    border-color: var(--cylvy-amaranth);
+}
+
+.btn-primary:hover {
+    background-color: var(--cylvy-fandango);
+    border-color: var(--cylvy-fandango);
+}
+
+.badge.bg-primary {
+    background-color: var(--cylvy-amaranth) !important;
+}
+
+/* Scrollable body for contact details */
+.scrollable-body {
+    max-height: 400px;
+    overflow-y: auto;
+}

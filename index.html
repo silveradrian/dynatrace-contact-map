@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynatrace ABM Contact Map</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand d-flex align-items-center" href="#">
+                <img src="static/img/dynatrace-logo.png" alt="Dynatrace" height="30" class="me-2">
+                <span class="border-end pe-3 me-3"></span>
+                <img src="static/img/cylvy-logo.png" alt="Cylvy" height="22.39" width="75">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Contact Map</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Analytics</a>
+                    </li>
+                </ul>
+                <span class="navbar-text">
+                    <i class="fas fa-user-circle me-2"></i>
+                    Account Manager
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container-fluid">
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Global Contact Explorer</h5>
+                        <div>
+                            <button class="btn btn-outline-secondary btn-sm me-2" id="export-csv">
+                                <i class="fas fa-file-csv me-1"></i> Export CSV
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm">
+                                <i class="fas fa-file-pdf me-1"></i> Export PDF
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <!-- Filter Panel -->
+                        <div class="row mb-4">
+                            <div class="col-md-2">
+                                <label class="form-label">Company</label>
+                                <select class="form-select form-select-sm filter" id="company-filter">
+                                    <option value="">All Companies</option>
+                                    <option value="Microsoft">Microsoft</option>
+                                    <option value="Amazon">Amazon</option>
+                                    <option value="Oracle">Oracle</option>
+                                    <option value="IBM">IBM</option>
+                                    <option value="SAP">SAP</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Domain</label>
+                                <select class="form-select form-select-sm filter" id="domain-filter">
+                                    <option value="">All Domains</option>
+                                    <option value="microsoft.com">microsoft.com</option>
+                                    <option value="amazon.com">amazon.com</option>
+                                    <option value="oracle.com">oracle.com</option>
+                                    <option value="ibm.com">ibm.com</option>
+                                    <option value="sap.com">sap.com</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Region</label>
+                                <select class="form-select form-select-sm filter" id="region-filter">
+                                    <option value="">All Regions</option>
+                                    <option value="EMEA">EMEA</option>
+                                    <option value="NAM">NAM</option>
+                                    <option value="APAC">APAC</option>
+                                    <option value="LATAM">LATAM</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Job Function</label>
+                                <select class="form-select form-select-sm filter" id="function-filter">
+                                    <option value="">All Functions</option>
+                                    <option value="IT">IT</option>
+                                    <option value="Marketing">Marketing</option>
+                                    <option value="Operations">Operations</option>
+                                    <option value="Finance">Finance</option>
+                                    <option value="Sales">Sales</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Job Title</label>
+                                <select class="form-select form-select-sm filter" id="title-filter">
+                                    <option value="">All Titles</option>
+                                    <option value="CIO">CIO</option>
+                                    <option value="CTO">CTO</option>
+                                    <option value="CMO">CMO</option>
+                                    <option value="VP">VP</option>
+                                    <option value="Director">Director</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">Seniority</label>
+                                <select class="form-select form-select-sm filter" id="seniority-filter">
+                                    <option value="">All Levels</option>
+                                    <option value="C-level">C-level</option>
+                                    <option value="VP">VP</option>
+                                    <option value="Director">Director</option>
+                                    <option value="Manager">Manager</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <!-- Map -->
+                            <div class="col-md-9">
+                                <div id="contact-map"></div>
+                            </div>
+                            <!-- Contact Details Panel -->
+                            <div class="col-md-3">
+                                <div class="card h-100">
+                                    <div class="card-header bg-light">
+                                        <h6 class="mb-0">Contact Details</h6>
+                                    </div>
+                                    <div class="card-body" id="contact-details">
+                                        <div class="text-center py-5 text-muted">
+                                            <i class="fas fa-user-circle fa-4x mb-3"></i>
+                                            <p>Select a contact on the map to view details</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                        <h6 class="mb-0">Filtered Results</h6>
+                                        <span class="badge bg-primary" id="contact-count">120 Contacts</span>
+                                    </div>
+                                    <div class="card-body p-0">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-striped mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Job Title</th>
+                                                        <th>Company</th>
+                                                        <th>Region</th>
+                                                        <th>Contact</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td>John Smith</td>
+                                                        <td>CIO</td>
+                                                        <td>Microsoft</td>
+                                                        <td>NAM</td>
+                                                        <td><a href="mailto:john.smith@microsoft.com">john.smith@microsoft.com</a></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-map-marker-alt"></i></button>
+                                                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-info-circle"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Emma Johnson</td>
+                                                        <td>VP Marketing</td>
+                                                        <td>Amazon</td>
+                                                        <td>EMEA</td>
+                                                        <td><a href="mailto:emma.johnson@amazon.com">emma.johnson@amazon.com</a></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-map-marker-alt"></i></button>
+                                                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-info-circle"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Michael Wong</td>
+                                                        <td>Director IT</td>
+                                                        <td>Oracle</td>
+                                                        <td>APAC</td>
+                                                        <td><a href="mailto:michael.wong@oracle.com">michael.wong@oracle.com</a></td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-outline-primary"><i class="fas fa-map-marker-alt"></i></button>
+                                                            <button class="btn btn-sm btn-outline-secondary"><i class="fas fa-info-circle"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Clustering plugin for Leaflet -->
+    <script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+    
+    <!-- Sample contact data -->
+    <script src="static/data/contacts.js"></script>
+    
+    <!-- Map JavaScript -->
+    <script src="static/js/map.js"></script>
+</body>
+</html>
