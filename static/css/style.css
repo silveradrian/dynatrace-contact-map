@@ -186,3 +186,35 @@ a:hover {
     max-height: 400px;
     overflow-y: auto;
 }
+
+/* LinkedIn button styling */
+.btn-linkedin {
+    background-color: #0077B5;
+    color: white;
+    border-color: #0077B5;
+}
+
+.btn-linkedin:hover {
+    background-color: #006699;
+    color: white;
+    border-color: #006699;
+}
+
+/* LinkedIn icon in contact card */
+.fa-linkedin {
+    color: #0077B5;
+}
+
+/* Optional: Add a LinkedIn section to the filter panel */
+.linkedin-filter-section {
+    background-color: #f8f9fa;
+    border-radius: var(--radius-radius-sm);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-left: 3px solid #0077B5;
+}
+
+.linkedin-filter-section h6 {
+    color: #0077B5;
+    margin-bottom: 10px;
+}

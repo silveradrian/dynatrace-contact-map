@@ -12,6 +12,7 @@ const contactsData = [
         location: "Redmond, USA",
         email: "john.smith@microsoft.com",
         phone: "+1-425-555-0100",
+        linkedin: "https://www.linkedin.com/in/johnsmith-microsoft/",
         latLng: [47.6740, -122.1215]
     },
     {
@@ -26,6 +27,7 @@ const contactsData = [
         location: "London, UK",
         email: "emma.johnson@amazon.com",
         phone: "+44-20-7946-0300",
+        linkedin: "https://www.linkedin.com/in/emmajohnson-amazon/",
         latLng: [51.5072, -0.1276]
     },
     {
@@ -40,6 +42,7 @@ const contactsData = [
         location: "Singapore",
         email: "michael.wong@oracle.com",
         phone: "+65-6303-5000",
+        linkedin: "https://www.linkedin.com/in/michaelwong-oracle/",
         latLng: [1.3521, 103.8198]
     },
     {
@@ -54,6 +57,7 @@ const contactsData = [
         location: "São Paulo, Brazil",
         email: "sophia.martinez@ibm.com",
         phone: "+55-11-2132-3333",
+        linkedin: "https://www.linkedin.com/in/sophiamartinez-ibm/",
         latLng: [-23.5505, -46.6333]
     },
     {
@@ -68,8 +72,10 @@ const contactsData = [
         location: "Seoul, South Korea",
         email: "david.kim@sap.com",
         phone: "+82-2-2194-5000",
+        linkedin: "https://www.linkedin.com/in/davidkim-sap/",
         latLng: [37.5665, 126.9780]
     },
+    // Rest of the contacts with added LinkedIn profiles...
     {
         id: 6,
         name: "Aisha Patel",
@@ -82,8 +88,10 @@ const contactsData = [
         location: "Dubai, UAE",
         email: "aisha.patel@microsoft.com",
         phone: "+971-4-309-9999",
+        linkedin: "https://www.linkedin.com/in/aishapatel-microsoft/",
         latLng: [25.2048, 55.2708]
     },
+    // Continue adding LinkedIn fields for all other contacts...
     {
         id: 7,
         name: "Thomas Müller",
@@ -96,6 +104,7 @@ const contactsData = [
         location: "Berlin, Germany",
         email: "thomas.mueller@sap.com",
         phone: "+49-30-4147-0",
+        linkedin: "https://www.linkedin.com/in/thomasmueller-sap/",
         latLng: [52.5200, 13.4050]
     },
     {
@@ -110,6 +119,7 @@ const contactsData = [
         location: "Sydney, Australia",
         email: "olivia.chen@oracle.com",
         phone: "+61-2-9491-1000",
+        linkedin: "https://www.linkedin.com/in/oliviachen-oracle/",
         latLng: [-33.8688, 151.2093]
     },
     {
@@ -124,6 +134,7 @@ const contactsData = [
         location: "Paris, France",
         email: "alexandre.dubois@ibm.com",
         phone: "+33-1-5856-0000",
+        linkedin: "https://www.linkedin.com/in/alexandredubois-ibm/",
         latLng: [48.8566, 2.3522]
     },
     {
@@ -138,6 +149,7 @@ const contactsData = [
         location: "Seattle, USA",
         email: "jennifer.wilson@amazon.com",
         phone: "+1-206-922-0880",
+        linkedin: "https://www.linkedin.com/in/jenniferwilson-amazon/",
         latLng: [47.6062, -122.3321]
     },
     {
@@ -152,6 +164,7 @@ const contactsData = [
         location: "Bangalore, India",
         email: "rajesh.sharma@microsoft.com",
         phone: "+91-80-4123-4000",
+        linkedin: "https://www.linkedin.com/in/rajeshsharma-microsoft/",
         latLng: [12.9716, 77.5946]
     },
     {
@@ -166,9 +179,9 @@ const contactsData = [
         location: "Amsterdam, Netherlands",
         email: "lisa.vanderberg@sap.com",
         phone: "+31-20-592-9333",
+        linkedin: "https://www.linkedin.com/in/lisavanderberg-sap/",
         latLng: [52.3676, 4.9041]
     },
-    // Add more contacts to demonstrate clustering
     {
         id: 13,
         name: "Carlos Rodriguez",
@@ -181,6 +194,7 @@ const contactsData = [
         location: "Mexico City, Mexico",
         email: "carlos.rodriguez@oracle.com",
         phone: "+52-55-5258-9000",
+        linkedin: "https://www.linkedin.com/in/carlosrodriguez-oracle/",
         latLng: [19.4326, -99.1332]
     },
     {
@@ -195,6 +209,7 @@ const contactsData = [
         location: "Tokyo, Japan",
         email: "hiroshi.tanaka@ibm.com",
         phone: "+81-3-6667-1111",
+        linkedin: "https://www.linkedin.com/in/hiroshitanaka-ibm/",
         latLng: [35.6762, 139.6503]
     },
     {
@@ -209,6 +224,7 @@ const contactsData = [
         location: "New York, USA",
         email: "sarah.johnson@microsoft.com",
         phone: "+1-212-245-2100",
+        linkedin: "https://www.linkedin.com/in/sarahjohnson-microsoft/",
         latLng: [40.7128, -74.0060]
     }
 ];
