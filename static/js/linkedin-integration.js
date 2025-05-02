@@ -2,7 +2,7 @@
  * LinkedIn Connection Intelligence Module
  * Front-end POC implementation for Dynatrace ABM Contact Map
  * @author silveradrian
- * @version 1.0.0
+ * @version 1.0.1
  */
 class LinkedInConnectionIntelligence {
     constructor() {
@@ -11,6 +11,8 @@ class LinkedInConnectionIntelligence {
         this.accountManagerId = null;
         this.accountManagerName = "Adrian Howett"; // Default for demo
         this.isAuthenticated = false;
+        
+        console.log("LinkedIn Connection Intelligence initializing...");
         
         // Initialize the UI components
         this.initUI();
@@ -23,207 +25,236 @@ class LinkedInConnectionIntelligence {
      * Initialize UI components for LinkedIn integration
      */
     initUI() {
-        // Add LinkedIn sign-in button to navbar
-        const navbarText = document.querySelector('.navbar-text');
-        if (navbarText) {
-            const linkedInAuthBtn = document.createElement('button');
-            linkedInAuthBtn.className = 'btn btn-outline-light ms-3';
-            linkedInAuthBtn.id = 'linkedin-auth-btn';
-            linkedInAuthBtn.innerHTML = '<i class="fab fa-linkedin me-1"></i> Connect My LinkedIn';
-            linkedInAuthBtn.addEventListener('click', () => this.authenticate());
-            navbarText.insertAdjacentElement('afterend', linkedInAuthBtn);
-        }
-        
-        // Add connection status indicator to the filter panel
-        const filterRow = document.querySelector('.row.mb-4');
-        if (filterRow) {
-            const connectionStatusCol = document.createElement('div');
-            connectionStatusCol.className = 'col-12 mt-3';
-            connectionStatusCol.innerHTML = `
-                <div id="linkedin-connection-status" class="alert alert-secondary d-flex justify-content-between align-items-center" role="alert">
-                    <div>
-                        <i class="fab fa-linkedin me-2"></i> 
-                        <span id="connection-status-text">LinkedIn not connected</span>
-                    </div>
-                    <button id="view-connections-btn" class="btn btn-sm btn-outline-primary d-none">
-                        View Connections
-                    </button>
-                </div>
-            `;
-            filterRow.insertAdjacentElement('afterend', connectionStatusCol);
+        try {
+            console.log("Adding LinkedIn button to navbar...");
+            // Add LinkedIn sign-in button to navbar
+            const navbarText = document.querySelector('.navbar-text');
+            if (navbarText) {
+                const linkedInAuthBtn = document.createElement('button');
+                linkedInAuthBtn.className = 'btn btn-outline-light ms-3';
+                linkedInAuthBtn.id = 'linkedin-auth-btn';
+                linkedInAuthBtn.innerHTML = '<i class="fab fa-linkedin me-1"></i> Connect My LinkedIn';
+                linkedInAuthBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    console.log("LinkedIn button clicked");
+                    this.authenticate();
+                });
+                navbarText.insertAdjacentElement('afterend', linkedInAuthBtn);
+                console.log("LinkedIn button added successfully");
+            } else {
+                console.error("Could not find .navbar-text element to add LinkedIn button");
+            }
             
-            // Add event listener to the "View Connections" button
-            document.getElementById('view-connections-btn').addEventListener('click', () => this.showConnectionsModal());
+            // Add connection status indicator to the filter panel
+            const filterRow = document.querySelector('.row.mb-4');
+            if (filterRow) {
+                const connectionStatusCol = document.createElement('div');
+                connectionStatusCol.className = 'col-12 mt-3';
+                connectionStatusCol.innerHTML = `
+                    <div id="linkedin-connection-status" class="alert alert-secondary d-flex justify-content-between align-items-center" role="alert">
+                        <div>
+                            <i class="fab fa-linkedin me-2"></i> 
+                            <span id="connection-status-text">LinkedIn not connected</span>
+                        </div>
+                        <button id="view-connections-btn" class="btn btn-sm btn-outline-primary d-none">
+                            View Connections
+                        </button>
+                    </div>
+                `;
+                filterRow.insertAdjacentElement('afterend', connectionStatusCol);
+                
+                // Add event listener to the "View Connections" button
+                document.getElementById('view-connections-btn').addEventListener('click', () => this.showConnectionsModal());
+            } else {
+                console.error("Could not find .row.mb-4 element to add connection status");
+            }
+            
+            // Add CSS for connection styling
+            this.addStyles();
+            
+            // Add connection modal
+            this.addConnectionsModal();
+            
+        } catch (error) {
+            console.error("Error in initUI:", error);
         }
-        
-        // Add CSS for connection styling
-        this.addStyles();
-        
-        // Add connection modal
-        this.addConnectionsModal();
     }
     
     /**
      * Add CSS styles for LinkedIn integration
      */
     addStyles() {
-        const style = document.createElement('style');
-        style.textContent = `
-            .btn-linkedin {
-                background-color: #0077B5;
-                color: white;
-                border-color: #0077B5;
-            }
-            
-            .btn-linkedin:hover {
-                background-color: #006699;
-                color: white;
-                border-color: #006699;
-            }
-            
-            .fa-linkedin {
-                color: inherit;
-            }
-            
-            .linkedin-icon {
-                color: #0077B5;
-            }
-            
-            .connection-level-1 {
-                border: 3px solid #28a745 !important;
-                z-index: 1000 !important;
-            }
-            
-            .connection-level-2 {
-                border: 3px solid #17a2b8 !important;
-                z-index: 999 !important;
-            }
-            
-            .connection-level-3 {
-                border: 3px solid #6c757d !important;
-                z-index: 998 !important;
-            }
-            
-            .badge-connection-1 {
-                background-color: #28a745;
-                color: white;
-            }
-            
-            .badge-connection-2 {
-                background-color: #17a2b8;
-                color: white;
-            }
-            
-            .badge-connection-3 {
-                background-color: #6c757d;
-                color: white;
-            }
-            
-            .connection-path {
-                font-size: 0.85rem;
-            }
-        `;
-        document.head.appendChild(style);
+        try {
+            const style = document.createElement('style');
+            style.textContent = `
+                .btn-linkedin {
+                    background-color: #0077B5;
+                    color: white;
+                    border-color: #0077B5;
+                }
+                
+                .btn-linkedin:hover {
+                    background-color: #006699;
+                    color: white;
+                    border-color: #006699;
+                }
+                
+                .fa-linkedin {
+                    color: inherit;
+                }
+                
+                .linkedin-icon {
+                    color: #0077B5;
+                }
+                
+                .connection-level-1 {
+                    border: 3px solid #28a745 !important;
+                    z-index: 1000 !important;
+                }
+                
+                .connection-level-2 {
+                    border: 3px solid #17a2b8 !important;
+                    z-index: 999 !important;
+                }
+                
+                .connection-level-3 {
+                    border: 3px solid #6c757d !important;
+                    z-index: 998 !important;
+                }
+                
+                .badge-connection-1 {
+                    background-color: #28a745;
+                    color: white;
+                }
+                
+                .badge-connection-2 {
+                    background-color: #17a2b8;
+                    color: white;
+                }
+                
+                .badge-connection-3 {
+                    background-color: #6c757d;
+                    color: white;
+                }
+                
+                .connection-path {
+                    font-size: 0.85rem;
+                }
+            `;
+            document.head.appendChild(style);
+        } catch (error) {
+            console.error("Error adding styles:", error);
+        }
     }
     
     /**
      * Add connections modal to the page
      */
     addConnectionsModal() {
-        const modal = document.createElement('div');
-        modal.className = 'modal fade';
-        modal.id = 'connectionsModal';
-        modal.tabIndex = '-1';
-        modal.setAttribute('aria-labelledby', 'connectionsModalLabel');
-        modal.setAttribute('aria-hidden', 'true');
-        
-        modal.innerHTML = `
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="connectionsModalLabel">
-                            <i class="fab fa-linkedin me-2"></i> LinkedIn Connection Intelligence
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="connection-summary mb-3">
-                            <div class="alert alert-info">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong><i class="fas fa-user-circle me-2"></i> <span id="modal-account-manager-name">Account Manager</span></strong>
-                                    </div>
-                                    <div>
-                                        <span class="badge rounded-pill bg-primary me-1" id="modal-connection-count-1">0</span> 1st
-                                        <span class="badge rounded-pill bg-info me-1" id="modal-connection-count-2">0</span> 2nd
-                                        <span class="badge rounded-pill bg-secondary me-1" id="modal-connection-count-3">0</span> 3rd
+        try {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade';
+            modal.id = 'connectionsModal';
+            modal.tabIndex = '-1';
+            modal.setAttribute('aria-labelledby', 'connectionsModalLabel');
+            modal.setAttribute('aria-hidden', 'true');
+            
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="connectionsModalLabel">
+                                <i class="fab fa-linkedin me-2"></i> LinkedIn Connection Intelligence
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="connection-summary mb-3">
+                                <div class="alert alert-info">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <strong><i class="fas fa-user-circle me-2"></i> <span id="modal-account-manager-name">Account Manager</span></strong>
+                                        </div>
+                                        <div>
+                                            <span class="badge rounded-pill bg-primary me-1" id="modal-connection-count-1">0</span> 1st
+                                            <span class="badge rounded-pill bg-info me-1" id="modal-connection-count-2">0</span> 2nd
+                                            <span class="badge rounded-pill bg-secondary me-1" id="modal-connection-count-3">0</span> 3rd
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <div class="table-responsive">
+                                <table class="table table-hover table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Contact</th>
+                                            <th>Company</th>
+                                            <th>Connection</th>
+                                            <th>Path</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="connections-table-body">
+                                        <!-- Connection data will be inserted here -->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div class="table-responsive">
-                            <table class="table table-hover table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Contact</th>
-                                        <th>Company</th>
-                                        <th>Connection</th>
-                                        <th>Path</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="connections-table-body">
-                                    <!-- Connection data will be inserted here -->
-                                </tbody>
-                            </table>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-linkedin" id="refresh-connections-btn">
+                                <i class="fas fa-sync-alt me-1"></i> Refresh Connections
+                            </button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-linkedin" id="refresh-connections-btn">
-                            <i class="fas fa-sync-alt me-1"></i> Refresh Connections
-                        </button>
                     </div>
                 </div>
-            </div>
-        `;
-        
-        document.body.appendChild(modal);
-        
-        // Add event listener to the refresh button
-        document.getElementById('refresh-connections-btn').addEventListener('click', () => {
-            this.fetchConnectionData();
-            // Show a toast message
-            this.showToast('Connections refreshed!');
-        });
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add event listener to the refresh button
+            document.getElementById('refresh-connections-btn').addEventListener('click', () => {
+                this.fetchConnectionData();
+                // Show a toast message
+                this.showToast('Connections refreshed!');
+            });
+        } catch (error) {
+            console.error("Error adding connections modal:", error);
+        }
     }
     
     /**
      * Show a toast message
      */
     showToast(message) {
-        const toastContainer = document.createElement('div');
-        toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
-        toastContainer.style.zIndex = '11';
-        toastContainer.innerHTML = `
-            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
-                <div class="toast-header">
-                    <i class="fab fa-linkedin me-2 text-primary"></i>
-                    <strong class="me-auto">LinkedIn</strong>
-                    <small>Just now</small>
-                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        try {
+            const toastContainer = document.createElement('div');
+            toastContainer.className = 'position-fixed bottom-0 end-0 p-3';
+            toastContainer.style.zIndex = '11';
+            toastContainer.innerHTML = `
+                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="toast-header">
+                        <i class="fab fa-linkedin me-2 text-primary"></i>
+                        <strong class="me-auto">LinkedIn</strong>
+                        <small>Just now</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        ${message}
+                    </div>
                 </div>
-                <div class="toast-body">
-                    ${message}
-                </div>
-            </div>
-        `;
-        document.body.appendChild(toastContainer);
-        
-        // Remove the toast after 3 seconds
-        setTimeout(() => {
-            document.body.removeChild(toastContainer);
-        }, 3000);
+            `;
+            document.body.appendChild(toastContainer);
+            
+            // Remove the toast after 3 seconds
+            setTimeout(() => {
+                if (document.body.contains(toastContainer)) {
+                    document.body.removeChild(toastContainer);
+                }
+            }, 3000);
+        } catch (error) {
+            console.error("Error showing toast:", error);
+        }
     }
     
     /**
@@ -231,145 +262,206 @@ class LinkedInConnectionIntelligence {
      * In a real app, this would use OAuth to authenticate with LinkedIn
      */
     authenticate() {
-        // Show login modal
-        this.showLoginModal();
+        try {
+            console.log("Authentication initiated...");
+            // Show login modal
+            this.showLoginModal();
+        } catch (error) {
+            console.error("Error in authenticate method:", error);
+            alert("Could not initialize LinkedIn login. Please check the console for errors.");
+        }
     }
     
     /**
      * Show LinkedIn login modal
      */
     showLoginModal() {
-        // Create a modal for LinkedIn login
-        const modalHtml = `
-            <div class="modal fade" id="linkedinLoginModal" tabindex="-1" aria-labelledby="linkedinLoginModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="linkedinLoginModalLabel">
-                                <i class="fab fa-linkedin me-2" style="color: #0077B5;"></i> Sign in with LinkedIn
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="text-center mb-4">
-                                <img src="https://brand.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn" width="120">
+        try {
+            console.log("Creating login modal...");
+            // Create a modal for LinkedIn login
+            const modalHtml = `
+                <div class="modal fade" id="linkedinLoginModal" tabindex="-1" aria-labelledby="linkedinLoginModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="linkedinLoginModalLabel">
+                                    <i class="fab fa-linkedin me-2" style="color: #0077B5;"></i> Sign in with LinkedIn
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <form id="linkedin-login-form">
-                                <div class="mb-3">
-                                    <label for="linkedin-email" class="form-label">Email or Phone</label>
-                                    <input type="email" class="form-control" id="linkedin-email" value="adrian.howett@example.com">
+                            <div class="modal-body">
+                                <div class="text-center mb-4">
+                                    <img src="https://brand.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn" width="120">
                                 </div>
-                                <div class="mb-3">
-                                    <label for="linkedin-password" class="form-label">Password</label>
-                                    <input type="password" class="form-control" id="linkedin-password" value="********">
+                                <form id="linkedin-login-form">
+                                    <div class="mb-3">
+                                        <label for="linkedin-email" class="form-label">Email or Phone</label>
+                                        <input type="email" class="form-control" id="linkedin-email" value="adrian.howett@example.com">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="linkedin-password" class="form-label">Password</label>
+                                        <input type="password" class="form-control" id="linkedin-password" value="********">
+                                    </div>
+                                    <div class="d-grid">
+                                        <button type="submit" class="btn btn-primary btn-linkedin">Sign In</button>
+                                    </div>
+                                </form>
+                                <div class="mt-3 text-center">
+                                    <small class="text-muted">This is a simulation for the POC. No actual authentication occurs.</small>
                                 </div>
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-linkedin">Sign In</button>
-                                </div>
-                            </form>
-                            <div class="mt-3 text-center">
-                                <small class="text-muted">This is a simulation for the POC. No actual authentication occurs.</small>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        `;
-        
-        // Add modal to the document
-        const modalElement = document.createElement('div');
-        modalElement.innerHTML = modalHtml;
-        document.body.appendChild(modalElement.firstChild);
-        
-        // Show the modal
-        const loginModal = new bootstrap.Modal(document.getElementById('linkedinLoginModal'));
-        loginModal.show();
-        
-        // Add event listener to the form
-        document.getElementById('linkedin-login-form').addEventListener('submit', (e) => {
-            e.preventDefault();
+            `;
             
-            // Hide the modal
-            loginModal.hide();
+            // Add modal to the document
+            const modalElement = document.createElement('div');
+            modalElement.innerHTML = modalHtml;
+            document.body.appendChild(modalElement.firstChild);
             
-            // Remove the modal element
-            setTimeout(() => {
-                document.getElementById('linkedinLoginModal').remove();
-            }, 300);
+            console.log("Modal element added to DOM");
             
-            // Simulate successful authentication
-            this.handleSuccessfulAuth();
-        });
+            // Verify Bootstrap is available
+            if (typeof bootstrap === 'undefined') {
+                console.error("Bootstrap is not defined! Make sure Bootstrap JS is loaded before this script.");
+                alert("LinkedIn integration requires Bootstrap JS to be loaded. Please check your scripts.");
+                return;
+            }
+            
+            // Show the modal
+            console.log("Initializing Bootstrap modal...");
+            const loginModal = new bootstrap.Modal(document.getElementById('linkedinLoginModal'));
+            loginModal.show();
+            
+            // Add event listener to the form
+            const form = document.getElementById('linkedin-login-form');
+            if (form) {
+                form.addEventListener('submit', (e) => {
+                    console.log("Login form submitted");
+                    e.preventDefault();
+                    
+                    // Hide the modal
+                    loginModal.hide();
+                    
+                    // Remove the modal element
+                    setTimeout(() => {
+                        const modalElement = document.getElementById('linkedinLoginModal');
+                        if (modalElement && modalElement.parentNode) {
+                            modalElement.parentNode.removeChild(modalElement);
+                        }
+                    }, 300);
+                    
+                    // Simulate successful authentication
+                    this.handleSuccessfulAuth();
+                });
+            } else {
+                console.error("LinkedIn login form not found in the DOM");
+            }
+            
+        } catch (error) {
+            console.error("Error showing login modal:", error);
+            alert("Could not open LinkedIn login modal. Please check the console for errors.");
+        }
     }
     
     /**
      * Handle successful authentication
      */
     handleSuccessfulAuth() {
-        this.isAuthenticated = true;
-        this.accountManagerId = 'am_' + Math.floor(Math.random() * 10000);
-        
-        // Update UI
-        const authBtn = document.getElementById('linkedin-auth-btn');
-        authBtn.innerHTML = '<i class="fab fa-linkedin me-1"></i> LinkedIn Connected';
-        authBtn.classList.remove('btn-outline-light');
-        authBtn.classList.add('btn-success');
-        
-        // Update connection status
-        const statusAlert = document.getElementById('linkedin-connection-status');
-        const statusText = document.getElementById('connection-status-text');
-        const viewConnectionsBtn = document.getElementById('view-connections-btn');
-        
-        statusAlert.classList.remove('alert-secondary');
-        statusAlert.classList.add('alert-success');
-        statusText.innerHTML = `Connected as <strong>${this.accountManagerName}</strong>`;
-        viewConnectionsBtn.classList.remove('d-none');
-        
-        // Fetch connection data
-        this.fetchConnectionData();
+        try {
+            console.log("Authentication successful");
+            this.isAuthenticated = true;
+            this.accountManagerId = 'am_' + Math.floor(Math.random() * 10000);
+            
+            // Update UI
+            const authBtn = document.getElementById('linkedin-auth-btn');
+            if (authBtn) {
+                authBtn.innerHTML = '<i class="fab fa-linkedin me-1"></i> LinkedIn Connected';
+                authBtn.classList.remove('btn-outline-light');
+                authBtn.classList.add('btn-success');
+            }
+            
+            // Update connection status
+            const statusAlert = document.getElementById('linkedin-connection-status');
+            const statusText = document.getElementById('connection-status-text');
+            const viewConnectionsBtn = document.getElementById('view-connections-btn');
+            
+            if (statusAlert && statusText && viewConnectionsBtn) {
+                statusAlert.classList.remove('alert-secondary');
+                statusAlert.classList.add('alert-success');
+                statusText.innerHTML = `Connected as <strong>${this.accountManagerName}</strong>`;
+                viewConnectionsBtn.classList.remove('d-none');
+            }
+            
+            // Fetch connection data
+            this.fetchConnectionData();
+        } catch (error) {
+            console.error("Error handling successful authentication:", error);
+        }
     }
     
     /**
      * Fetch (simulate) LinkedIn connection data
      */
     fetchConnectionData() {
-        // For the POC, generate random connection data
-        this.connectionData = {};
-        let count1 = 0, count2 = 0, count3 = 0;
-        
-        contactsData.forEach(contact => {
-            // Randomly assign connection level (1st, 2nd, 3rd, or none)
-            const connectionLevel = Math.floor(Math.random() * 4); // 0-3, where 0 means no connection
+        try {
+            console.log("Fetching connection data...");
+            // For the POC, generate random connection data
+            this.connectionData = {};
+            let count1 = 0, count2 = 0, count3 = 0;
             
-            if (connectionLevel > 0) {
-                this.connectionData[contact.id] = {
-                    contactId: contact.id,
-                    level: connectionLevel,
-                    paths: this.generateSamplePaths(connectionLevel, contact)
-                };
-                
-                // Update counts
-                if (connectionLevel === 1) count1++;
-                else if (connectionLevel === 2) count2++;
-                else if (connectionLevel === 3) count3++;
+            if (typeof contactsData === 'undefined' || !contactsData) {
+                console.error("contactsData is not defined! Make sure contacts.js is loaded before this script.");
+                this.showToast("Error: Contact data not available");
+                return;
             }
-        });
-        
-        // Update connection counts in the modal
-        document.getElementById('modal-account-manager-name').textContent = this.accountManagerName;
-        document.getElementById('modal-connection-count-1').textContent = count1;
-        document.getElementById('modal-connection-count-2').textContent = count2;
-        document.getElementById('modal-connection-count-3').textContent = count3;
-        
-        // Enhance contacts with connection data
-        this.enhanceContactsWithConnectionData();
-        
-        // Update connections table in modal
-        this.updateConnectionsTable();
-        
-        // Show a success message
-        this.showToast(`LinkedIn data loaded: ${count1 + count2 + count3} connections found!`);
+            
+            contactsData.forEach(contact => {
+                // Randomly assign connection level (1st, 2nd, 3rd, or none)
+                const connectionLevel = Math.floor(Math.random() * 4); // 0-3, where 0 means no connection
+                
+                if (connectionLevel > 0) {
+                    this.connectionData[contact.id] = {
+                        contactId: contact.id,
+                        level: connectionLevel,
+                        paths: this.generateSamplePaths(connectionLevel, contact)
+                    };
+                    
+                    // Update counts
+                    if (connectionLevel === 1) count1++;
+                    else if (connectionLevel === 2) count2++;
+                    else if (connectionLevel === 3) count3++;
+                }
+            });
+            
+            // Update connection counts in the modal
+            const nameElement = document.getElementById('modal-account-manager-name');
+            const count1Element = document.getElementById('modal-connection-count-1');
+            const count2Element = document.getElementById('modal-connection-count-2');
+            const count3Element = document.getElementById('modal-connection-count-3');
+            
+            if (nameElement) nameElement.textContent = this.accountManagerName;
+            if (count1Element) count1Element.textContent = count1;
+            if (count2Element) count2Element.textContent = count2;
+            if (count3Element) count3Element.textContent = count3;
+            
+            // Enhance contacts with connection data
+            this.enhanceContactsWithConnectionData();
+            
+            // Update connections table in modal
+            this.updateConnectionsTable();
+            
+            // Show a success message
+            this.showToast(`LinkedIn data loaded: ${count1 + count2 + count3} connections found!`);
+            console.log("Connection data generated:", this.connectionData);
+        } catch (error) {
+            console.error("Error fetching connection data:", error);
+            this.showToast("Error: Could not fetch LinkedIn data");
+        }
     }
+    
+    // Rest of the code remains the same...
     
     /**
      * Generate sample connection paths
@@ -430,110 +522,137 @@ class LinkedInConnectionIntelligence {
      * Show the connections modal
      */
     showConnectionsModal() {
-        if (!this.isAuthenticated) return;
-        
-        // Make sure we have the latest data
-        this.updateConnectionsTable();
-        
-        // Show the modal
-        const modal = new bootstrap.Modal(document.getElementById('connectionsModal'));
-        modal.show();
+        try {
+            if (!this.isAuthenticated) return;
+            
+            // Make sure we have the latest data
+            this.updateConnectionsTable();
+            
+            // Show the modal
+            const modalElement = document.getElementById('connectionsModal');
+            if (modalElement && typeof bootstrap !== 'undefined') {
+                const modal = new bootstrap.Modal(modalElement);
+                modal.show();
+            } else {
+                console.error("Could not show connections modal: Modal element or Bootstrap not found");
+            }
+        } catch (error) {
+            console.error("Error showing connections modal:", error);
+        }
     }
     
     /**
      * Update the connections table in the modal
      */
     updateConnectionsTable() {
-        const tableBody = document.getElementById('connections-table-body');
-        tableBody.innerHTML = '';
-        
-        // Sort connections by level (1st, then 2nd, then 3rd)
-        const sortedContacts = Object.keys(this.connectionData)
-            .map(id => {
-                const contactId = parseInt(id);
-                const contact = contactsData.find(c => c.id === contactId);
-                const connection = this.connectionData[id];
-                return { contact, connection };
-            })
-            .sort((a, b) => a.connection.level - b.connection.level);
-        
-        sortedContacts.forEach(({ contact, connection }) => {
-            const row = document.createElement('tr');
+        try {
+            const tableBody = document.getElementById('connections-table-body');
+            if (!tableBody) return;
             
-            // Create badge for connection level
-            const levelBadge = this.getConnectionLevelBadge(connection.level);
+            tableBody.innerHTML = '';
             
-            row.innerHTML = `
-                <td>
-                    <div class="d-flex align-items-center">
-                        <div>
-                            <strong>${contact.name}</strong><br>
-                            <small class="text-muted">${contact.title}</small>
+            // Sort connections by level (1st, then 2nd, then 3rd)
+            const sortedContacts = Object.keys(this.connectionData)
+                .map(id => {
+                    const contactId = parseInt(id);
+                    const contact = contactsData.find(c => c.id === contactId);
+                    const connection = this.connectionData[id];
+                    return { contact, connection };
+                })
+                .filter(item => item.contact) // Make sure contact exists
+                .sort((a, b) => a.connection.level - b.connection.level);
+            
+            sortedContacts.forEach(({ contact, connection }) => {
+                const row = document.createElement('tr');
+                
+                // Create badge for connection level
+                const levelBadge = this.getConnectionLevelBadge(connection.level);
+                
+                row.innerHTML = `
+                    <td>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <strong>${contact.name}</strong><br>
+                                <small class="text-muted">${contact.title}</small>
+                            </div>
                         </div>
-                    </div>
-                </td>
-                <td>${contact.company}</td>
-                <td>${levelBadge}</td>
-                <td>
-                    <small>${this.formatConnectionPath(connection.paths[0])}</small>
-                </td>
-                <td>
-                    <button class="btn btn-sm btn-outline-primary view-contact-btn" data-id="${contact.id}">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                    <a href="${contact.linkedin}" target="_blank" class="btn btn-sm btn-linkedin">
-                        <i class="fab fa-linkedin"></i>
-                    </a>
-                </td>
-            `;
-            
-            tableBody.appendChild(row);
-            
-            // Add click event to view contact
-            row.querySelector('.view-contact-btn').addEventListener('click', () => {
-                const modal = bootstrap.Modal.getInstance(document.getElementById('connectionsModal'));
-                modal.hide();
-                this.highlightContact(contact.id);
+                    </td>
+                    <td>${contact.company}</td>
+                    <td>${levelBadge}</td>
+                    <td>
+                        <small>${this.formatConnectionPath(connection.paths[0])}</small>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary view-contact-btn" data-id="${contact.id}">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                        <a href="${contact.linkedin}" target="_blank" class="btn btn-sm btn-linkedin">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                    </td>
+                `;
+                
+                tableBody.appendChild(row);
+                
+                // Add click event to view contact
+                const viewBtn = row.querySelector('.view-contact-btn');
+                if (viewBtn) {
+                    viewBtn.addEventListener('click', () => {
+                        try {
+                            const modal = bootstrap.Modal.getInstance(document.getElementById('connectionsModal'));
+                            if (modal) modal.hide();
+                            this.highlightContact(contact.id);
+                        } catch (error) {
+                            console.error("Error handling view button click:", error);
+                        }
+                    });
+                }
             });
-        });
+        } catch (error) {
+            console.error("Error updating connections table:", error);
+        }
     }
     
     /**
      * Enhance contact data with connection information
      */
     enhanceContactsWithConnectionData() {
-        // If we have the map initialized in the global scope
-        if (typeof map !== 'undefined' && map && window.markers) {
-            window.markers.forEach(marker => {
-                const contactId = marker.options.contactId;
-                const connection = this.connectionData[contactId];
-                
-                if (connection) {
-                    // Add connection level class to marker
-                    const markerElement = marker.getElement();
-                    if (markerElement) {
-                        // Remove any existing connection level classes
-                        markerElement.classList.remove('connection-level-1', 'connection-level-2', 'connection-level-3');
-                        // Add the new connection level class
-                        markerElement.classList.add(`connection-level-${connection.level}`);
+        try {
+            // If we have the map initialized in the global scope
+            if (typeof map !== 'undefined' && map && window.markers) {
+                window.markers.forEach(marker => {
+                    const contactId = marker.options.contactId;
+                    const connection = this.connectionData[contactId];
+                    
+                    if (connection) {
+                        // Add connection level class to marker
+                        const markerElement = marker.getElement();
+                        if (markerElement) {
+                            // Remove any existing connection level classes
+                            markerElement.classList.remove('connection-level-1', 'connection-level-2', 'connection-level-3');
+                            // Add the new connection level class
+                            markerElement.classList.add(`connection-level-${connection.level}`);
+                        }
+                    }
+                });
+            }
+            
+            // Update the contact details if any are currently shown
+            const detailsContainer = document.getElementById('contact-details');
+            if (detailsContainer && !detailsContainer.querySelector('.text-center')) {
+                // There's a contact being displayed, find which one
+                const nameElement = detailsContainer.querySelector('.contact-header h5');
+                if (nameElement) {
+                    const name = nameElement.textContent;
+                    const contact = contactsData.find(c => c.name === name);
+                    if (contact) {
+                        // Re-render the contact details with connection data
+                        this.renderContactDetails(contact);
                     }
                 }
-            });
-        }
-        
-        // Update the contact details if any are currently shown
-        const detailsContainer = document.getElementById('contact-details');
-        if (detailsContainer && !detailsContainer.querySelector('.text-center')) {
-            // There's a contact being displayed, find which one
-            const nameElement = detailsContainer.querySelector('.contact-header h5');
-            if (nameElement) {
-                const name = nameElement.textContent;
-                const contact = contactsData.find(c => c.name === name);
-                if (contact) {
-                    // Re-render the contact details with connection data
-                    this.renderContactDetails(contact);
-                }
             }
+        } catch (error) {
+            console.error("Error enhancing contact data:", error);
         }
     }
     
@@ -541,83 +660,91 @@ class LinkedInConnectionIntelligence {
      * Highlight a contact on the map
      */
     highlightContact(contactId) {
-        const contact = contactsData.find(c => c.id === parseInt(contactId));
-        if (!contact) return;
-        
-        // Center map on contact
-        if (typeof map !== 'undefined' && map) {
-            map.setView(contact.latLng, 6);
+        try {
+            const contact = contactsData.find(c => c.id === parseInt(contactId));
+            if (!contact) return;
             
-            // Find and open the marker popup
-            if (window.markers) {
-                window.markers.forEach(marker => {
-                    if (marker.options.contactId === parseInt(contactId)) {
-                        marker.openPopup();
-                    }
-                });
+            // Center map on contact
+            if (typeof map !== 'undefined' && map) {
+                map.setView(contact.latLng, 6);
+                
+                // Find and open the marker popup
+                if (window.markers) {
+                    window.markers.forEach(marker => {
+                        if (marker.options.contactId === parseInt(contactId)) {
+                            marker.openPopup();
+                        }
+                    });
+                }
             }
+            
+            // Show contact details
+            this.renderContactDetails(contact);
+        } catch (error) {
+            console.error("Error highlighting contact:", error);
         }
-        
-        // Show contact details
-        this.renderContactDetails(contact);
     }
     
     /**
      * Render contact details with connection information
      */
     renderContactDetails(contact) {
-        const detailsContainer = document.getElementById('contact-details');
-        if (!detailsContainer) return;
-        
-        const connection = this.connectionData[contact.id];
-        
-        // Connection information HTML
-        let connectionHtml = '';
-        if (connection) {
-            const levelBadge = this.getConnectionLevelBadge(connection.level);
+        try {
+            const detailsContainer = document.getElementById('contact-details');
+            if (!detailsContainer) return;
             
-            connectionHtml = `
-                <div class="connection-info mt-3">
-                    <h6 class="border-bottom pb-2">LinkedIn Connection</h6>
-                    <p>${levelBadge} connection to this contact</p>
-                    <div class="connection-paths">
-                        ${connection.paths.map(path => `
-                            <div class="connection-path mb-2">
-                                <small class="text-muted">Via: ${this.formatConnectionPath(path)}</small>
-                            </div>
-                        `).join('')}
+            const connection = this.connectionData[contact.id];
+            
+            // Connection information HTML
+            let connectionHtml = '';
+            if (connection) {
+                const levelBadge = this.getConnectionLevelBadge(connection.level);
+                
+                connectionHtml = `
+                    <div class="connection-info mt-3">
+                        <h6 class="border-bottom pb-2">LinkedIn Connection</h6>
+                        <p>${levelBadge} connection to this contact</p>
+                        <div class="connection-paths">
+                            ${connection.paths.map(path => `
+                                <div class="connection-path mb-2">
+                                    <small class="text-muted">Via: ${this.formatConnectionPath(path)}</small>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            detailsContainer.innerHTML = `
+                <div class="contact-card">
+                    <div class="contact-header">
+                        <h5>${contact.name}</h5>
+                        <span class="badge ${this.getSeniorityBadgeClass(contact.seniority)}">${contact.seniority}</span>
+                    </div>
+                    <div class="contact-company">${contact.company}</div>
+                    <div class="contact-title">${contact.title}</div>
+                    <div class="contact-info">
+                        <p><i class="fas fa-globe"></i> ${contact.region} - ${contact.location}</p>
+                        <p><i class="fas fa-envelope"></i> <a href="mailto:${contact.email}">${contact.email}</a></p>
+                        <p><i class="fas fa-phone"></i> <a href="tel:${contact.phone}">${contact.phone}</a></p>
+                        <p><i class="fas fa-link"></i> <a href="https://${contact.domain}" target="_blank">${contact.domain}</a></p>
+                        <p><i class="fab fa-linkedin linkedin-icon"></i> <a href="${contact.linkedin}" target="_blank">View Profile</a></p>
+                    </div>
+                    ${connection ? connectionHtml : ''}
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <button class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-address-card me-1"></i> Add to CRM
+                        </button>
+                        <a href="${contact.linkedin}" target="_blank" class="btn btn-sm btn-linkedin">
+                            <i class="fab fa-linkedin me-1"></i> Connect
+                        </a>
                     </div>
                 </div>
             `;
+        } catch (error) {
+            console.error("Error rendering contact details:", error);
         }
-        
-        detailsContainer.innerHTML = `
-            <div class="contact-card">
-                <div class="contact-header">
-                    <h5>${contact.name}</h5>
-                    <span class="badge ${this.getSeniorityBadgeClass(contact.seniority)}">${contact.seniority}</span>
-                </div>
-                <div class="contact-company">${contact.company}</div>
-                <div class="contact-title">${contact.title}</div>
-                <div class="contact-info">
-                    <p><i class="fas fa-globe"></i> ${contact.region} - ${contact.location}</p>
-                    <p><i class="fas fa-envelope"></i> <a href="mailto:${contact.email}">${contact.email}</a></p>
-                    <p><i class="fas fa-phone"></i> <a href="tel:${contact.phone}">${contact.phone}</a></p>
-                    <p><i class="fas fa-link"></i> <a href="https://${contact.domain}" target="_blank">${contact.domain}</a></p>
-                    <p><i class="fab fa-linkedin linkedin-icon"></i> <a href="${contact.linkedin}" target="_blank">View Profile</a></p>
-                </div>
-                ${connection ? connectionHtml : ''}
-                <hr>
-                <div class="d-flex justify-content-between">
-                    <button class="btn btn-sm btn-outline-primary">
-                        <i class="fas fa-address-card me-1"></i> Add to CRM
-                    </button>
-                    <a href="${contact.linkedin}" target="_blank" class="btn btn-sm btn-linkedin">
-                        <i class="fab fa-linkedin me-1"></i> Connect
-                    </a>
-                </div>
-            </div>
-        `;
     }
     
     /**
@@ -676,16 +803,35 @@ class LinkedInConnectionIntelligence {
 
 // Initialize the LinkedIn Connection Intelligence module when the page is loaded
 document.addEventListener('DOMContentLoaded', function() {
-    // Create an instance of the LinkedIn Connection Intelligence module
-    window.linkedInIntelligence = new LinkedInConnectionIntelligence();
-    
-    // Override the showContactDetails function to include connection information
-    const originalShowContactDetails = window.showContactDetails;
-    window.showContactDetails = function(contact) {
-        if (window.linkedInIntelligence && window.linkedInIntelligence.isAuthenticated) {
-            window.linkedInIntelligence.renderContactDetails(contact);
-        } else {
-            originalShowContactDetails(contact);
+    console.log("DOM fully loaded - initializing LinkedIn Connection Intelligence");
+    try {
+        // Make sure Bootstrap is available
+        if (typeof bootstrap === 'undefined') {
+            console.warn("Bootstrap not detected - LinkedIn integration may not work properly");
         }
-    };
+        
+        // Make sure contacts data is available
+        if (typeof contactsData === 'undefined') {
+            console.error("Contact data not available - LinkedIn integration may not work properly");
+        }
+        
+        // Create an instance of the LinkedIn Connection Intelligence module
+        window.linkedInIntelligence = new LinkedInConnectionIntelligence();
+        
+        // Override the showContactDetails function to include connection information
+        if (typeof window.showContactDetails === 'function') {
+            const originalShowContactDetails = window.showContactDetails;
+            window.showContactDetails = function(contact) {
+                if (window.linkedInIntelligence && window.linkedInIntelligence.isAuthenticated) {
+                    window.linkedInIntelligence.renderContactDetails(contact);
+                } else {
+                    originalShowContactDetails(contact);
+                }
+            };
+        } else {
+            console.warn("Original showContactDetails function not found - cannot override");
+        }
+    } catch (error) {
+        console.error("Error initializing LinkedIn Connection Intelligence:", error);
+    }
 });
