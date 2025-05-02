@@ -20,13 +20,39 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="static/css/style.css">
+    
+    <!-- LinkedIn Button Styling -->
+    <style>
+    /* LinkedIn button styling */
+    .btn-linkedin {
+        background-color: #0077B5;
+        color: white;
+        border-color: #0077B5;
+    }
+    
+    .btn-linkedin:hover {
+        background-color: #006699;
+        color: white;
+        border-color: #006699;
+    }
+    
+    /* Make sure the LinkedIn icon itself is properly styled */
+    .fa-linkedin {
+        color: inherit; /* Inherit color from parent */
+    }
+    
+    /* For standalone LinkedIn icons that are not in buttons */
+    .linkedin-icon {
+        color: #0077B5;
+    }
+    </style>
 </head>
 <body>
     <!-- Navigation Bar -->
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container-fluid">
             <a class="navbar-brand d-flex align-items-center" href="#">
-                <img src="static/img/dynatrace-logo.png" alt="Dynatrace" height="30" class="me-2">
+                <img src="static/img/download.png" alt="Dynatrace" height="30" class="me-2">
                 <span class="border-end pe-3 me-3"></span>
                 <img src="static/img/cylvy-logo.svg" alt="Cylvy" height="22.39" width="75">
             </a>
@@ -248,21 +274,5 @@
     
     <!-- Map JavaScript -->
     <script src="static/js/map.js"></script>
-
-    <!-- Add this to your CSS file -->
-    <style>
-    /* LinkedIn button styling */
-    .btn-linkedin {
-        background-color: #0077B5;
-        color: white;
-        border-color: #0077B5;
-    }
-    
-    .btn-linkedin:hover {
-        background-color: #006699;
-        color: white;
-        border-color: #006699;
-    }
-    </style>
 </body>
 </html>
