@@ -275,46 +275,7 @@ class LinkedInConnectionIntelligence {
     /**
      * Show LinkedIn login modal
      */
-    showLoginModal() {
-        try {
-            console.log("Creating login modal...");
-            // Create a modal for LinkedIn login
-            const modalHtml = `
-                <div class="modal fade" id="linkedinLoginModal" tabindex="-1" aria-labelledby="linkedinLoginModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="linkedinLoginModalLabel">
-                                    <i class="fab fa-linkedin me-2" style="color: #0077B5;"></i> Sign in with LinkedIn
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <div class="text-center mb-4">
-                                    <img src="https://brand.linkedin.com/content/dam/me/business/en-us/amp/brand-site/v2/bg/LI-Logo.svg.original.svg" alt="LinkedIn" width="120">
-                                </div>
-                                <form id="linkedin-login-form">
-                                    <div class="mb-3">
-                                        <label for="linkedin-email" class="form-label">Email or Phone</label>
-                                        <input type="email" class="form-control" id="linkedin-email" value="adrian.howett@example.com">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="linkedin-password" class="form-label">Password</label>
-                                        <input type="password" class="form-control" id="linkedin-password" value="********">
-                                    </div>
-                                    <div class="d-grid">
-                                        <button type="submit" class="btn btn-primary btn-linkedin">Sign In</button>
-                                    </div>
-                                </form>
-                                <div class="mt-3 text-center">
-                                    <small class="text-muted">This is a simulation for the POC. No actual authentication occurs.</small>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
+   
             // Add modal to the document
             const modalElement = document.createElement('div');
             modalElement.innerHTML = modalHtml;
