@@ -49,7 +49,7 @@
                     <i class="fas fa-user-circle me-2"></i>
                     Account Manager
                 </span>
-                <!-- Updated LinkedIn button for company page -->
+                <!-- LinkedIn button for company page -->
                 <a href="https://www.linkedin.com/company/dynatrace/" target="_blank" class="btn btn-outline-light ms-2">
                     <i class="fab fa-linkedin me-1"></i> Dynatrace Company Page
                 </a>
@@ -139,41 +139,6 @@
                                     <option value="Director">Director</option>
                                     <option value="Manager">Manager</option>
                                 </select>
-                            </div>
-                        </div>
-
-                        <!-- LinkedIn Insights Filter -->
-                        <div class="row mt-3 mb-4">
-                            <div class="col-12">
-                                <div class="linkedin-filter-section">
-                                    <h6><i class="fab fa-linkedin me-2"></i>LinkedIn Insights</h6>
-                                    <div class="row">
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="linkedin-connected">
-                                                <label class="form-check-label" for="linkedin-connected">
-                                                    Connected on LinkedIn
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="linkedin-endorsed">
-                                                <label class="form-check-label" for="linkedin-endorsed">
-                                                    Endorsed Skills
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" value="" id="linkedin-recent">
-                                                <label class="form-check-label" for="linkedin-recent">
-                                                    Recent Activity
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                             </div>
                         </div>
 
@@ -269,48 +234,6 @@
         </div>
     </div>
 
-    <!-- LinkedIn Connect Modal -->
-    <div class="modal fade" id="linkedinConnectModal" tabindex="-1" aria-labelledby="linkedinConnectModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="linkedinConnectModalLabel">Connect on LinkedIn</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center mb-3">
-                        <i class="fab fa-linkedin fa-3x text-primary"></i>
-                    </div>
-                    <div class="contact-profile-card mb-3" id="linkedin-contact-profile">
-                        <!-- Contact profile will be inserted here dynamically -->
-                    </div>
-                    <div class="mb-3">
-                        <label for="connection-note" class="form-label">Add a personal note:</label>
-                        <textarea class="form-control" id="connection-note" rows="3" placeholder="Hi, I'd like to connect with you..."></textarea>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" value="" id="include-company-info">
-                        <label class="form-check-label" for="include-company-info">
-                            Include company information
-                        </label>
-                    </div>
-                    <div class="form-check mb-3">
-                        <input class="form-check-input" type="checkbox" value="" id="add-to-crm">
-                        <label class="form-check-label" for="add-to-crm">
-                            Add to CRM when connected
-                        </label>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-linkedin" id="send-connection-request">
-                        <i class="fab fa-linkedin me-1"></i> Send Connection Request
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Bootstrap JavaScript -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
@@ -325,5 +248,21 @@
     
     <!-- Map JavaScript -->
     <script src="static/js/map.js"></script>
+
+    <!-- Add this to your CSS file -->
+    <style>
+    /* LinkedIn button styling */
+    .btn-linkedin {
+        background-color: #0077B5;
+        color: white;
+        border-color: #0077B5;
+    }
+    
+    .btn-linkedin:hover {
+        background-color: #006699;
+        color: white;
+        border-color: #006699;
+    }
+    </style>
 </body>
 </html>

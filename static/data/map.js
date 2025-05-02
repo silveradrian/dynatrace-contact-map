@@ -84,6 +84,7 @@ function createPopupContent(contact) {
 
     // Function to show contact details
 
+// Function to show contact details
 function showContactDetails(contact) {
     const detailsContainer = document.getElementById('contact-details');
     
@@ -100,7 +101,6 @@ function showContactDetails(contact) {
                 <p><i class="fas fa-envelope"></i> <a href="mailto:${contact.email}">${contact.email}</a></p>
                 <p><i class="fas fa-phone"></i> <a href="tel:${contact.phone}">${contact.phone}</a></p>
                 <p><i class="fas fa-link"></i> <a href="https://${contact.domain}" target="_blank">${contact.domain}</a></p>
-                <p><i class="fab fa-linkedin"></i> <a href="${contact.linkedin}" target="_blank">LinkedIn Profile</a></p>
             </div>
             <hr>
             <div class="d-flex justify-content-between">
@@ -108,7 +108,7 @@ function showContactDetails(contact) {
                     <i class="fas fa-address-card me-1"></i> Add to CRM
                 </button>
                 <a href="${contact.linkedin}" target="_blank" class="btn btn-sm btn-linkedin">
-                    <i class="fab fa-linkedin me-1"></i> Connect
+                    <i class="fab fa-linkedin me-1"></i> Connect on LinkedIn
                 </a>
             </div>
         </div>
