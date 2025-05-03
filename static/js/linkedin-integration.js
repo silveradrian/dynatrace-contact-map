@@ -2,7 +2,7 @@
  * LinkedIn Connection Intelligence Module
  * Front-end POC implementation for Dynatrace ABM Contact Map
  * @author silveradrian
- * @version 1.0.1
+ * @version 1.0.2
  */
 class LinkedInConnectionIntelligence {
     constructor() {
@@ -264,65 +264,11 @@ class LinkedInConnectionIntelligence {
     authenticate() {
         try {
             console.log("Authentication initiated...");
-            // Show login modal using a simpler approach
+            // Use ONLY the simple login modal to avoid Bootstrap issues
             this.showSimpleLoginModal();
         } catch (error) {
             console.error("Error in authenticate method:", error);
             alert("Could not initialize LinkedIn login. Please check the console for errors.");
-        }
-    }
-    
-    /**
-     * Show LinkedIn login modal
-     */
-   
-            // Add modal to the document
-            const modalElement = document.createElement('div');
-            modalElement.innerHTML = modalHtml;
-            document.body.appendChild(modalElement.firstChild);
-            
-            console.log("Modal element added to DOM");
-            
-            // Verify Bootstrap is available
-            if (typeof bootstrap === 'undefined') {
-                console.error("Bootstrap is not defined! Make sure Bootstrap JS is loaded before this script.");
-                alert("LinkedIn integration requires Bootstrap JS to be loaded. Please check your scripts.");
-                return;
-            }
-            
-            // Show the modal
-            console.log("Initializing Bootstrap modal...");
-            const loginModal = new bootstrap.Modal(document.getElementById('linkedinLoginModal'));
-            loginModal.show();
-            
-            // Add event listener to the form
-            const form = document.getElementById('linkedin-login-form');
-            if (form) {
-                form.addEventListener('submit', (e) => {
-                    console.log("Login form submitted");
-                    e.preventDefault();
-                    
-                    // Hide the modal
-                    loginModal.hide();
-                    
-                    // Remove the modal element
-                    setTimeout(() => {
-                        const modalElement = document.getElementById('linkedinLoginModal');
-                        if (modalElement && modalElement.parentNode) {
-                            modalElement.parentNode.removeChild(modalElement);
-                        }
-                    }, 300);
-                    
-                    // Simulate successful authentication
-                    this.handleSuccessfulAuth();
-                });
-            } else {
-                console.error("LinkedIn login form not found in the DOM");
-            }
-            
-        } catch (error) {
-            console.error("Error showing login modal:", error);
-            alert("Could not open LinkedIn login modal. Please check the console for errors.");
         }
     }
     
